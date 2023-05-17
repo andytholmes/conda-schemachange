@@ -1,9 +1,15 @@
 # schemachange
 <img src="images/schemachange-logo-title.png" alt="schemachange" title="schemachange logo" width="600" />
 
-*Looking for snowchange? You've found the right spot. snowchange has been renamed to schemachange.*
+##FORK NOTES
+
+Andrew Holmes forked the original repo (https://github.com/Snowflake-Labs/schemachange) with the view to create a conda package. no files have been changed save this README. Additional files have been added to allow a conda build
+
+
 
 ## Overview
+
+*Looking for snowchange? You've found the right spot. snowchange has been renamed to schemachange.*
 
 schemachange is a simple python based tool to manage all of your [Snowflake](https://www.snowflake.com/) objects. It follows an Imperative-style approach to Database Change Management (DCM) and was inspired by the [Flyway database migration tool](https://flywaydb.org). When combined with a version control system and a CI/CD tool, database changes can be approved and deployed through a pipeline using modern software delivery practices. As such schemachange plays a critical role in enabling Database (or Data) DevOps.
 
@@ -177,17 +183,17 @@ Additionally, if the `--create-change-history-table` parameter is given, then sc
 
 The structure of the `CHANGE_HISTORY` table is as follows:
 
-Column Name | Type |  Example
---- | --- | ---
-VERSION | VARCHAR | 1.1.1
-DESCRIPTION | VARCHAR | First change
-SCRIPT | VARCHAR | V1.1.1__first_change.sql
-SCRIPT_TYPE | VARCHAR | V
-CHECKSUM | VARCHAR | 38e5ba03b1a6d2...
-EXECUTION_TIME | NUMBER | 4
-STATUS | VARCHAR | Success
-INSTALLED_BY | VARCHAR | SNOWFLAKE_USER
-INSTALLED_ON | TIMESTAMP_LTZ | 2020-03-17 12:54:33.056 -0700
+| Column Name    | Type          | Example                       |
+|----------------|---------------|-------------------------------|
+ | VERSION        | VARCHAR       | 1.1.1                         |
+ | DESCRIPTION    | VARCHAR       | First change                  |
+ | SCRIPT         | VARCHAR       | V1.1.1__first_change.sql      |
+ | SCRIPT_TYPE    | VARCHAR       | V                             |
+ | CHECKSUM       | VARCHAR       | 38e5ba03b1a6d2...             |
+ | EXECUTION_TIME | NUMBER        | 4                             |
+ | STATUS         | VARCHAR       | Success                       |
+ | INSTALLED_BY   | VARCHAR       | SNOWFLAKE_USER                |
+ | INSTALLED_ON   | TIMESTAMP_LTZ | 2020-03-17 12:54:33.056 -0700 |
 
 A new row will be added to this table every time a change script has been applied to the database. schemachange will use this table to identify which changes have been applied to the database and will not apply the same version more than once.
 
@@ -366,25 +372,25 @@ This is the main command that runs the deployment process.
 
 `usage: schemachange deploy [-h] [--config-folder CONFIG_FOLDER] [-f ROOT_FOLDER] [-m MODULES_FOLDER] [-a SNOWFLAKE_ACCOUNT] [-u SNOWFLAKE_USER] [-r SNOWFLAKE_ROLE] [-w SNOWFLAKE_WAREHOUSE] [-d SNOWFLAKE_DATABASE] [-c CHANGE_HISTORY_TABLE] [--vars VARS] [--create-change-history-table] [-ac] [-v] [--dry-run] [--query-tag QUERY_TAG]`
 
-Parameter | Description
---- | ---
--h, --help | Show the help message and exit
---config-folder CONFIG_FOLDER | The folder to look in for the schemachange-config.yml file (the default is the current working directory)
--f ROOT_FOLDER, --root-folder ROOT_FOLDER | The root folder for the database change scripts. The default is the current directory.
--m MODULES_FOLDER, --modules-folder MODULES_FOLDER | The modules folder for jinja macros and templates to be used across mutliple scripts
--a SNOWFLAKE_ACCOUNT, --snowflake-account SNOWFLAKE_ACCOUNT | The name of the snowflake account (e.g. xy12345.east-us-2.azure).
--u SNOWFLAKE_USER, --snowflake-user SNOWFLAKE_USER | The name of the snowflake user
--r SNOWFLAKE_ROLE, --snowflake-role SNOWFLAKE_ROLE | The name of the role to use
--w SNOWFLAKE_WAREHOUSE, --snowflake-warehouse SNOWFLAKE_WAREHOUSE | The name of the default warehouse to use. Can be overridden in the change scripts.
--d SNOWFLAKE_DATABASE, --snowflake-database SNOWFLAKE_DATABASE | The name of the default database to use. Can be overridden in the change scripts.
--c CHANGE_HISTORY_TABLE, --change-history-table CHANGE_HISTORY_TABLE | Used to override the default name of the change history table (which is METADATA.SCHEMACHANGE.CHANGE_HISTORY)
---vars VARS | Define values for the variables to replaced in change scripts, given in JSON format (e.g. '{"variable1": "value1", "variable2": "value2"}')
---create-change-history-table | Create the change history table if it does not exist. The default is 'False'.
--ac, --autocommit | Enable autocommit feature for DML commands. The default is 'False'.
--v, --verbose | Display verbose debugging details during execution. The default is 'False'.
---dry-run | Run schemachange in dry run mode. The default is 'False'.
---query-tag | A string to include in the QUERY_TAG that is attached to every SQL statement executed.
---oauth-config | Define values for the variables to Make Oauth Token requests  (e.g. {"token-provider-url": "https//...", "token-request-payload": {"client_id": "GUID_xyz",...},... })'
+| Parameter                                                            | Description                                                                                                                                                             |
+|----------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+ | -h, --help                                                           | Show the help message and exit                                                                                                                                          |
+ | --config-folder CONFIG_FOLDER                                        | The folder to look in for the schemachange-config.yml file (the default is the current working directory)                                                               |
+ | -f ROOT_FOLDER, --root-folder ROOT_FOLDER                            | The root folder for the database change scripts. The default is the current directory.                                                                                  |
+ | -m MODULES_FOLDER, --modules-folder MODULES_FOLDER                   | The modules folder for jinja macros and templates to be used across mutliple scripts                                                                                    |
+ | -a SNOWFLAKE_ACCOUNT, --snowflake-account SNOWFLAKE_ACCOUNT          | The name of the snowflake account (e.g. xy12345.east-us-2.azure).                                                                                                       |
+ | -u SNOWFLAKE_USER, --snowflake-user SNOWFLAKE_USER                   | The name of the snowflake user                                                                                                                                          |
+ | -r SNOWFLAKE_ROLE, --snowflake-role SNOWFLAKE_ROLE                   | The name of the role to use                                                                                                                                             |
+ | -w SNOWFLAKE_WAREHOUSE, --snowflake-warehouse SNOWFLAKE_WAREHOUSE    | The name of the default warehouse to use. Can be overridden in the change scripts.                                                                                      |
+ | -d SNOWFLAKE_DATABASE, --snowflake-database SNOWFLAKE_DATABASE       | The name of the default database to use. Can be overridden in the change scripts.                                                                                       |
+ | -c CHANGE_HISTORY_TABLE, --change-history-table CHANGE_HISTORY_TABLE | Used to override the default name of the change history table (which is METADATA.SCHEMACHANGE.CHANGE_HISTORY)                                                           |
+ | --vars VARS                                                          | Define values for the variables to replaced in change scripts, given in JSON format (e.g. '{"variable1": "value1", "variable2": "value2"}')                             |
+ | --create-change-history-table                                        | Create the change history table if it does not exist. The default is 'False'.                                                                                           |
+ | -ac, --autocommit                                                    | Enable autocommit feature for DML commands. The default is 'False'.                                                                                                     |
+ | -v, --verbose                                                        | Display verbose debugging details during execution. The default is 'False'.                                                                                             |
+ | --dry-run                                                            | Run schemachange in dry run mode. The default is 'False'.                                                                                                               |
+ | --query-tag                                                          | A string to include in the QUERY_TAG that is attached to every SQL statement executed.                                                                                  |
+ | --oauth-config                                                       | Define values for the variables to Make Oauth Token requests  (e.g. {"token-provider-url": "https//...", "token-request-payload": {"client_id": "GUID_xyz",...},... })' |
 
 #### render
 This subcommand is used to render a single script to the console. It is intended to support the development and troubleshooting of script that use features from the jinja template engine.
