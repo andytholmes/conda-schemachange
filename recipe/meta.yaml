@@ -1,6 +1,6 @@
 package:
   name: schemachange
-  version: 0.1
+  version: "0.1"
 
 source:
   path: ../
@@ -9,14 +9,22 @@ requirements:
   build:
     - python
     - setuptools
+    - snowflake-connector-python >=2.8,<3.0
+    - pandas >=1.3,<2.0
+    - pyyaml >=5.4,<6.0
+    - jinja2 >=3.0,<4.0
+
   run:
     - python >=3.7
-    - snowflake-connector-python >=2.8
-    - pandas >=1.3
-    - pyyaml >=5.4
-    - jinja2 >=3.0
+    - snowflake-connector-python >=2.8,<3.0
+    - pandas >=1.3,<2.0
+    - pyyaml >=5.4,<6.0
+    - jinja2 >=3.0,<4.0
 
 about:
   home: https://github.com/andytholmes/conda-schemachange
-  license: Apache-2.0 license
+  license: "Apache-2.0 license"
   summary: A tool for managing database schema changes. This is a fork of the original repo at https://github.com/Snowflake-Labs/schemachange
+
+build:
+  noarch: python
